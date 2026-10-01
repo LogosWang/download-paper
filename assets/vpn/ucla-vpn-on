@@ -1,0 +1,41 @@
+#!/bin/zsh
+
+set -e
+
+OPENCONNECT="/opt/homebrew/bin/openconnect"
+BROWSER_LAUNCHER="/usr/local/libexec/openconnect-browser"
+PID_FILE="/var/run/ucla-openconnect.pid"
+
+# 允许直接运行 ucla-vpn-on，脚本自动取得 root 权限
+if [[ "$EUID" -ne 0 ]]; then
+    exec sudo "$0" "$@"
+fi
+
+if [[ ! -x "$OPENCONNECT" ]]; then
+    echo "找不到 OpenConnect：$OPENCONNECT" >&2
+    exit 1
+fi
+
+if [[ ! -x "$BROWSER_LAUNCHER" ]]; then
+    echo "找不到浏览器启动器：$BROWSER_LAUNCHER" >&2
+    exit 1
+fi
+
+if [[ -f "$PID_FILE" ]]; then
+    PID="$(cat "$PID_FILE" 2>/dev/null || true)"
+
+    if [[ -n "$PID" ]] && kill -0 "$PID" 2>/dev/null; then
+        echo "UCLA VPN 已经连接，PID：$PID"
+        exit 0
+    fi
+
+    rm -f "$PID_FILE"
+fi
+
+exec "$OPENCONNECT" \
+    --protocol=anyconnect \
+    --external-browser="$BROWSER_LAUNCHER" \
+    --background \
+    --disable-ipv6 \
+    --pid-file="$PID_FILE" \
+    https://ssl.vpn.ucla.edu/

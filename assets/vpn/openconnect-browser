@@ -1,0 +1,13 @@
+#!/bin/zsh
+
+URL="$1"
+
+if [[ -z "$URL" ]]; then
+    echo "No authentication URL was supplied." >&2
+    exit 1
+fi
+
+LOGIN_USER="${SUDO_USER:-$(stat -f '%Su' /dev/console)}"
+
+exec /usr/bin/sudo -u "$LOGIN_USER" \
+    /usr/bin/open "$URL"

@@ -1,0 +1,37 @@
+#!/bin/zsh
+
+PID_FILE="/var/run/ucla-openconnect.pid"
+
+if [[ "$EUID" -ne 0 ]]; then
+    exec sudo "$0" "$@"
+fi
+
+if [[ ! -f "$PID_FILE" ]]; then
+    echo "未发现正在运行的 UCLA VPN。"
+    exit 0
+fi
+
+PID="$(cat "$PID_FILE" 2>/dev/null || true)"
+
+if [[ -z "$PID" ]]; then
+    rm -f "$PID_FILE"
+    echo "PID 文件无效，已清理。"
+    exit 0
+fi
+
+if kill -0 "$PID" 2>/dev/null; then
+    kill -INT "$PID"
+
+    for i in {1..40}; do
+        if ! kill -0 "$PID" 2>/dev/null; then
+            break
+        fi
+        sleep 0.25
+    done
+
+    echo "UCLA VPN 已断开。"
+else
+    echo "OpenConnect 进程已经停止。"
+fi
+
+rm -f "$PID_FILE"

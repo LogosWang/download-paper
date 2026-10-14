@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """AIP (pubs.aip.org, Silverchair) PDF via CDP Chrome: waits for the JS-rendered article-pdf link.
 Usage: download_aip_cdp.py <doi-or-url> <dest.pdf>"""
-import sys, os
+import sys, os, re
 from playwright.sync_api import sync_playwright
 url, dest = sys.argv[1], sys.argv[2]
 if not url.startswith("http"): url = "https://doi.org/" + url
@@ -17,7 +17,10 @@ with sync_playwright() as p:
     except Exception:
         print("no article-pdf link after 120s; title:", page.title(), "| url:", page.url[:120])
         print(page.inner_text("body")[:600].replace("\n", " ")); sys.exit(1)
-    href = page.locator("a[href*='article-pdf']").first.get_attribute("href")
+    hrefs = page.eval_on_selector_all("a[href*='article-pdf']", "els => els.map(e => e.href)")
+    # AIP lists the CHORUS accepted manuscript first; prefer the typeset version of record
+    vor = [h for h in hrefs if not re.search(r"accepted_manuscript|/am/|_am\.pdf", h, re.I)]
+    href = (vor or hrefs)[0]
     if href.startswith("/"):
         from urllib.parse import urlsplit; u = urlsplit(page.url); href = f"{u.scheme}://{u.netloc}" + href
     print("pdf link:", href[:140], flush=True)

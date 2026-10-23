@@ -27,3 +27,13 @@ Baidu Xueshu and CNKI block the automated Chrome (captcha / bad cert). If a titl
 
 ## E-book prices (if asked)
 Amazon/Kobo/Cambridge product pages 403 to WebFetch; load them in the CDP Chrome and read `.a-price .a-offscreen` / `[id^=tmm-grid-swatch]` on Amazon, body text on Kobo/Cambridge.
+
+## Lessons from specific publishers (2026-10)
+- **APS**: the direct `journals.aps.org/<j>/pdf/<DOI>` URL renders inline and `download_cdp.py` reports `no-link`; give it the **abstract** page `journals.aps.org/<j>/abstract/<DOI>` instead — the PDF link there downloads fine.
+- **Nature / npj**: `download_cdp.py` picks the first `.pdf` link, which on npj article pages is `..._reference.pdf` (the reference list). Use curl on `https://www.nature.com/articles/<id>.pdf` first; if that is a challenge page, pass that exact `.pdf` URL to `download_cdp.py`, not the article page.
+- **De Gruyter (`degruyterbrill.com`)**: `document/doi/<DOI>/pdf` is the PDF route, but check the page text first — "Unlicensed" + "Purchase Article $42" means UCLA has no licence (true for Z. Phys. Chem. B 1933). One attempt, then report.
+- **Wiley**: `onlinelibrary.wiley.com/doi/pdfdirect/<DOI>?download=true` works directly through CDP (Z. Elektrochem./Ber. Bunsenges. back volumes included).
+- **J-STAGE**: Crossref `link` gives `…/_pdf`; plain curl works. Japanese-language articles carry an English title/abstract on page 1.
+- **IOP-hosted ECS (J. Electrochem. Soc. ≤2020)**: `iopscience.iop.org/article/<DOI>/pdf` via curl.
+- **IUPAC Gold Book**: `goldbook.iupac.org/files/pdf/goldbook.pdf` (v2.3.3, 1670 pp) returns 403 to curl but downloads through CDP.
+- **UCLA catalog (`search.library.ucla.edu`)**: results page text contains "Available Online" for unrelated hits too — only use it to confirm a *print* copy ("Available at SEL"); e-access must be confirmed on the publisher platform.

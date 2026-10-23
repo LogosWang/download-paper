@@ -38,7 +38,7 @@ with sync_playwright() as p:
                 cleared = True; break
             t = page.title() or ""; low = t.lower()
             if t and "请稍候" not in t and "moment" not in low and "robot" not in low \
-               and "attention required" not in low and t != "ScienceDirect":
+               and "attention required" not in low and t != "ScienceDirect" and "redirecting" not in low:
                 cleared = True; break
             page.wait_for_timeout(2000)
         print("    cleared:", cleared, "| title:", (page.title() or "")[:70], flush=True)

@@ -5,7 +5,7 @@ Always probe first with `page_text_cdp.py <book_url>`; then use the platform scr
 ## Cambridge Core — "You have access"
 `<V> scripts/cambridge_zip_cdp.py <book_url> <dest.zip>`
 "Download PDF (zip)" silently does nothing until chapters are selected; the script ticks every `input[type=checkbox]` first. A ~45 MB zip of per-chapter PDFs arrives in ~2 min. Unzip, merge with pypdf (`PdfWriter.append` is fine here).
-"Get access" = no UCLA licence (true for Tadmor & Miller *Modeling Materials*, Phillips *Crystals, Defects and Microstructures*). Zwanzig *Nonequilibrium Statistical Mechanics* on Oxford Academic is likewise "Get access" on every chapter.
+"Get access" = no UCLA licence (true for Tadmor & Miller *Modeling Materials*, Phillips *Crystals, Defects and Microstructures*, Birks–Meier–Pettit *Introduction to the High-Temperature Oxidation of Metals* 2006). Zwanzig *Nonequilibrium Statistical Mechanics* on Oxford Academic is likewise "Get access" on every chapter.
 
 ## ScienceDirect books — "Full text access"
 `<V> scripts/sd_book_chapters_cdp.py <book_url> <chapter_dir> <merged.pdf>`
@@ -17,3 +17,8 @@ There is no whole-book download. Each chapter page has an `a.sideDownload` "DOWN
 
 ## Everything else
 VitalSource / ProQuest / EBSCO viewers are DRM page renderers — not downloadable; report as unavailable and suggest print/ILL or purchase.
+
+## Confirmed available / unavailable (UCLA)
+- ScienceDirect, "Full text access": Young *High Temperature Oxidation and Corrosion of Metals* 2nd ed. (19 chapter PIIs → 722 pp merged), Pathria, Goldenfeld-type Elsevier titles.
+- No e-licence (print at SEL only): Laidler *Chemical Kinetics* 3rd ed. (Harper & Row 1987), Atkins *Physical Chemistry* 11th ed. (OUP 2018), Levenspiel *Chemical Reaction Engineering* 3rd ed. (Wiley 1999). Report as print-only; never fall back to Sci-Hub/LibGen.
+- `sd_book_chapters_cdp.py` takes 15–20 s per chapter; a 19-chapter book exceeds a 170 s cap, so run it 2–3 times — it resumes from the chapter files already in `<outdir>`.

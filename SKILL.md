@@ -49,6 +49,8 @@ Name the file after the folder. Then fix what Crossref gets wrong (the script pr
 
 Tell the user how to import it: 文件 → 导入 → 文件…, Import Option **Reference Manager (RIS)**, Text Translation UTF-8 — and *not* to also "Import PDF" the folder (duplicates). By default EndNote copies each attached PDF into `<Library>.Data/PDF/`; if they want EndNote to link to the originals instead, they must untick "Copy new file attachments to the default file attachment folder" in Preferences → URLs & Links *before* importing, and then never move the folder.
 
+**Zotero with sub-collections (multi-journal / categorized folders):** RIS cannot carry collection structure, so when the user wants the import to land as a collection with sub-collections, also build a Zotero RDF: `venv/bin/python scripts/build_zotero_rdf.py <base_dir> <CollectionName> "<subdir>=<Display name>" ...` after the per-subfolder `.ris` files exist. It writes `<base>/<CollectionName>.ris` (merged, absolute L1) and `<base>/<CollectionName>.rdf` (one `z:Collection` per subfolder nested under a top collection, PDFs attached by path relative to the .rdf). Zotero → File → Import → the .rdf, with "Place imported collections and items into new collection" ticked. Tell the user not to move the folder before importing.
+
 ### 7. Deliver
 - Naming: `FirstAuthor_Year_JournalAbbrev_Topic.pdf`; books `Author_Year_Title_Publisher.pdf`.
 - One folder per request (the user names it or you pick a descriptive one); for a list, add a `README.md` table: item, file, DOI, source, pages, and any correction to the user's citation (wrong author list, preprint vs journal).

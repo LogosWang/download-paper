@@ -2,7 +2,12 @@
 
 set -e
 
-OPENCONNECT="/opt/homebrew/bin/openconnect"
+# Homebrew prefix differs by CPU: /opt/homebrew (Apple Silicon) vs /usr/local (Intel)
+OPENCONNECT=""
+for c in /opt/homebrew/bin/openconnect /usr/local/bin/openconnect /opt/local/bin/openconnect "$(command -v openconnect 2>/dev/null)"; do
+    [[ -n "$c" && -x "$c" ]] && { OPENCONNECT="$c"; break; }
+done
+[[ -z "$OPENCONNECT" ]] && OPENCONNECT="/opt/homebrew/bin/openconnect"
 BROWSER_LAUNCHER="/usr/local/libexec/openconnect-browser"
 PID_FILE="/var/run/ucla-openconnect.pid"
 

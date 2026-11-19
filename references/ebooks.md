@@ -22,3 +22,6 @@ VitalSource / ProQuest / EBSCO viewers are DRM page renderers — not downloadab
 - ScienceDirect, "Full text access": Young *High Temperature Oxidation and Corrosion of Metals* 2nd ed. (19 chapter PIIs → 722 pp merged), Pathria, Goldenfeld-type Elsevier titles.
 - No e-licence (print at SEL only): Laidler *Chemical Kinetics* 3rd ed. (Harper & Row 1987), Atkins *Physical Chemistry* 11th ed. (OUP 2018), Levenspiel *Chemical Reaction Engineering* 3rd ed. (Wiley 1999), Crank *The Mathematics of Diffusion* 2nd ed. (Clarendon 1975; UC Library Search 2026-11-19: every e-record "No Online Access", print QD543 .C851m 1975 at SEL). Report as print-only; never fall back to Sci-Hub/LibGen.
 - `sd_book_chapters_cdp.py` takes 15–20 s per chapter; a 19-chapter book exceeds a 170 s cap, so run it 2–3 times — it resumes from the chapter files already in `<outdir>`.
+
+## Wiley Online Books
+If the book page shows "View and download full book", `download_cdp.py <dir> "https://onlinelibrary.wiley.com/doi/pdfdirect/<book-DOI>?download=true::<file>.pdf"` returns the whole book in one shot (Hahn & Özışık *Heat Conduction* 3rd ed. 2012, 10.1002/9781118411285, 734 pp., 8 MB). Only fall back to per-chapter `pdfdirect/<DOI>.chN` when that link is absent. Özışık 1993 2nd ed. itself has no e-version at UCLA; the 2012 3rd ed. is the licensed successor.

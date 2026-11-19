@@ -20,5 +20,5 @@ VitalSource / ProQuest / EBSCO viewers are DRM page renderers — not downloadab
 
 ## Confirmed available / unavailable (UCLA)
 - ScienceDirect, "Full text access": Young *High Temperature Oxidation and Corrosion of Metals* 2nd ed. (19 chapter PIIs → 722 pp merged), Pathria, Goldenfeld-type Elsevier titles.
-- No e-licence (print at SEL only): Laidler *Chemical Kinetics* 3rd ed. (Harper & Row 1987), Atkins *Physical Chemistry* 11th ed. (OUP 2018), Levenspiel *Chemical Reaction Engineering* 3rd ed. (Wiley 1999). Report as print-only; never fall back to Sci-Hub/LibGen.
+- No e-licence (print at SEL only): Laidler *Chemical Kinetics* 3rd ed. (Harper & Row 1987), Atkins *Physical Chemistry* 11th ed. (OUP 2018), Levenspiel *Chemical Reaction Engineering* 3rd ed. (Wiley 1999), Crank *The Mathematics of Diffusion* 2nd ed. (Clarendon 1975; UC Library Search 2026-11-19: every e-record "No Online Access", print QD543 .C851m 1975 at SEL). Report as print-only; never fall back to Sci-Hub/LibGen.
 - `sd_book_chapters_cdp.py` takes 15–20 s per chapter; a 19-chapter book exceeds a 170 s cap, so run it 2–3 times — it resumes from the chapter files already in `<outdir>`.
